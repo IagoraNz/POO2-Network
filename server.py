@@ -1,11 +1,18 @@
 import socket
+host = '127.0.0.1'
+port = 9000
+addr = (host, port)
+serv_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM) #cria o socket
+serv_socket.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1) #reiniciliza o socket
+serv_socket.bind(addr) #define a porta e quais ips podem se conectar com o servidor
+serv_socket.listen(10) #define o limite de conexoes
+print ('aguardando conexao')
+con, cliente = serv_socket.accept()  # servidor aguardando conexao
+print('conectado')
+print('aguardando mensagem')
 
-ip = ''
-port = 900
-addr = ((ip, port))
-server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-server_socket.bind(addr)
-server_socket.listen(10)
-print('listening on', addr)
-connection, client_addr = server_socket.accept()
-print('connection from', client_addr)
+while(True):
+    recebe = con.recv(1024) #define que os pacotes recebidos sao de ate 1024 bytes
+    con.send('teste'.encode())
+    print ('mensagem recebida: '+ recebe.decode())
+serv_socket.close() #fecha a conexao
